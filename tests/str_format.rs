@@ -1,7 +1,18 @@
 use std::fmt::{self, Formatter, Display};
 
+/**
+打印操作由 std::fmt 里面所定义的一系列宏来处理，包括：
+    format!：将格式化文本写到字符串（String）。（译注：字符串是返回值不是参数。）
+    print!：与 format! 类似，但将文本输出到控制台（io::stdout）。
+    println!: 与 print! 类似，但输出结果追加一个换行符。
+    eprint!：与 format! 类似，但将文本输出到标准错误（io::stderr）。
+    eprintln!：与 eprint! 类似，但输出结果追加一个换行符。
+*/
+
 #[test]
 fn test_str_format() {
+    let text = format!("{} days", 31);
+    println!("{}", text);
     // 通常情况下，`{}` 会被任意变量内容所替换。
     // 变量内容会转化成字符串。
     println!("{} days", 31);
@@ -98,4 +109,21 @@ fn test_struct_custom_format() {
     ].iter() {
         println!("{}", *city);
     }
+}
+
+
+#[test]
+fn test_pretty_print() {
+    // 美化打印
+    #[derive(Debug)]
+    struct Person<'a> {
+        name: &'a str,
+        age: u8
+    }
+    let name = "Peter";
+    let age = 27;
+    let peter = Person { name, age };
+
+    // 美化打印
+    println!("{:#?}", peter);
 }
