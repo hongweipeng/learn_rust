@@ -87,12 +87,16 @@ fn test_struct_custom_format() {
         // 经度
         lon: f32,
     }
-
+    // 为了使用 `{}` 标记，必须手动为类型实现 `fmt::Display` trait。
     impl Display for City { // 自定义结构体的输出
+        // 这个 trait 要求 `fmt` 使用与下面的函数完全一致的函数签名
         // `f` 是一个缓冲区（buffer），此方法必须将格式化后的字符串写入其中
         fn fmt(&self, f: &mut Formatter) -> fmt::Result {
             let lat_c = if self.lat >= 0.0 { 'N' } else { 'S' };
             let lon_c = if self.lon >= 0.0 { 'E' } else { 'W' };
+
+            // 仅将 self 的第一个元素写入到给定的输出流 `f`。返回 `fmt:Result`，此
+            // 结果表明操作成功或失败。注意 `write!` 的用法和 `println!` 很相似。
 
             // `write!` 和 `format!` 类似，但它会将格式化后的字符串写入
             // 一个缓冲区（即第一个参数f）中。
