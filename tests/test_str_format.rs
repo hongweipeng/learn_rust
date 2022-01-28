@@ -43,16 +43,20 @@ fn test_str_format() {
     // println! 会检查使用到的参数数量是否正确。
     // println!("My name is {0}, {1} {0}", "Bond");
     println!("My name is {0}, {1} {0}", "Bond", "James");
-    // 改正 ^ 补上漏掉的参数："James"
+
 
     // 创建一个包含单个 `i32` 的结构体（structure）。命名为 `Structure`。
     #[allow(dead_code)]
     struct Structure(i32);
-
     // 但是像结构体这样的自定义类型需要更复杂的方式来处理。
     // 下面语句无法运行。
     // println!("This struct `{}` won't print...", Structure(3));
-    // 改正 ^ 注释掉此行。
+
+    #[derive(Debug)]
+    struct Deep(i32);
+    // 而用 derive(Debug) 装饰的结构体则可以打印
+    println!("Now {:?} will print!", Deep(3));
+
 }
 
 
@@ -115,6 +119,35 @@ fn test_struct_custom_format() {
     }
 }
 
+#[test]
+fn test_struct_display_list_format() {
+    // 定义一个包含单个 `Vec` 的结构体 `List`。
+    struct List(Vec<i32>);
+
+    impl fmt::Display for List {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            // 使用元组的下标获取值，并创建一个 `vec` 的引用。
+            let vec = &self.0;
+
+            write!(f, "[")?;    // write! 可以多次使用
+
+            // 使用 `v` 对 `vec` 进行迭代，并用 `count` 记录迭代次数。
+            for (count, v) in vec.iter().enumerate() {
+                // 对每个元素（第一个元素除外）加上逗号。
+                // 使用 `?` 或 `try!` 来返回错误。
+                if count != 0 { write!(f, ", ")?; }
+                write!(f, "{}", v)?;
+            }
+
+            // 加上配对中括号，并返回一个 fmt::Result 值。
+            write!(f, "]")
+        }
+    }
+
+    let v = List(vec![1, 2, 3]);
+    println!("{}", v);
+
+}
 
 #[test]
 fn test_pretty_print() {
@@ -122,7 +155,7 @@ fn test_pretty_print() {
     #[derive(Debug)]
     struct Person<'a> {
         name: &'a str,
-        age: u8
+        age: u8,
     }
     let name = "Peter";
     let age = 27;
@@ -130,4 +163,7 @@ fn test_pretty_print() {
 
     // 美化打印
     println!("{:#?}", peter);
+
+    assert_eq!(name, peter.name);
+    assert_eq!(age, peter.age);
 }
