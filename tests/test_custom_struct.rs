@@ -184,6 +184,7 @@ fn test_enum_c_style() {
     assert_eq!(0, Number::Zero as i32);
     assert_eq!(1, Number::One as i32);
 
+    // assert_eq!(0xff0000, Color::Red);    // no implementation for `{integer} == Color`
     assert_eq!(0xff0000, Color::Red as i32);
     assert_eq!(0x00ff00, Color::Green as i32);
 
