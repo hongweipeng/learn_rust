@@ -218,3 +218,32 @@ fn test_list_type() {
 
 }
 
+#[test]
+fn test_str_change_to_int() {
+    // 字符串转整型
+    let guess: u32 = "42".parse().expect("Not a number!");
+    assert_eq!(42, guess);
+}
+
+#[test]
+fn test_array_and_slice() {
+    // 数组中的元素类型必须都是一样的
+    // 数组是用来声明定长的，若需要变长数组，应该使用 vector
+
+    // 声明固定大小的数组
+    let xs: [i32; 5] = [1, 2, 3, 4, 5];
+
+    // All elements can be initialized to the same value
+    let ys: [i32; 500] = [0; 500];
+    assert_eq!(0, ys[400]);
+    assert_eq!(500, ys.len());
+
+    // slice
+    let pick = &xs[1..4]; // 从索引1取到索引4（不包含4） pick = [2, 3, 4];
+    assert_eq!(3, pick.len());
+    assert_eq!(2, pick[0]);
+    assert_eq!(3, pick[1]);
+    assert_eq!(4, pick[2]);
+
+}
+
