@@ -27,4 +27,14 @@ fn test_function_declare() {
     assert_eq!(6, six());
 }
 
+#[test]
+fn test_function_params_type() {
+    fn add(x:i32, y:i32) -> i32 {
+        return x + y;
+    }
+    assert_eq!(5, add(2, 3));
+
+    let a: i8 = 3;
+    assert_eq!(5, add(2, a as i32)); // 需要将类型做转换
+}
 

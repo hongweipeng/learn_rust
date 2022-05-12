@@ -112,6 +112,12 @@ fn test_for() {
         assert_eq!(*element, nums[i]);
         i += 1;
     }
+
+    i = 0;
+    for &element in nums.iter() {   // 注意这里 element 前面加了 &
+        assert_eq!(element, nums[i]);
+        i += 1;
+    }
 }
 
 #[test]
